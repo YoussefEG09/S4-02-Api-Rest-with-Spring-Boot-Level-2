@@ -20,8 +20,10 @@ public class FruitController {
         this.fruitService = fruitService;
     }
 
+
     @PostMapping
     public ResponseEntity<FruitResponseDTO> addFruit(@Valid @RequestBody FruitDTO dto) {
+
         FruitResponseDTO response = fruitService.createFruit(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -45,9 +47,15 @@ public class FruitController {
         return ResponseEntity.ok(response);
     }
 
+
     @GetMapping
-    public ResponseEntity<List<FruitResponseDTO>> getAllFruits() {
-        List<FruitResponseDTO> response = fruitService.getAllFruits();
+    public ResponseEntity<List<FruitResponseDTO>> getAllFruits(@RequestParam(required = false) Long providerId) {
+        List<FruitResponseDTO> response;
+        if (providerId != null) {
+            response = fruitService.getFruitsByProvider(providerId);
+        } else {
+            response = fruitService.getAllFruits();
+        }
         return ResponseEntity.ok(response);
     }
 }

@@ -13,6 +13,9 @@ public class FruitDTO {
     @Positive
     private int weightInKg;
 
+    @NotNull
+    private Long providerId;
+
     public FruitDTO() {
     }
 
@@ -36,4 +39,9 @@ public class FruitDTO {
     public void setWeightInKg(int weightInKg) {
         this.weightInKg = weightInKg;
     }
+
+    public Long getProviderId() { return providerId; }
+
+    public void setProviderId(Long providerId) { this.providerId = providerId; }
 }
+

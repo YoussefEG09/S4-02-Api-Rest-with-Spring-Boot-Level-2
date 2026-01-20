@@ -4,6 +4,7 @@ import cat.itacademy.s04.t02.n02.fruit.dto.FruitDTO;
 import cat.itacademy.s04.t02.n02.fruit.dto.FruitResponseDTO;
 import cat.itacademy.s04.t02.n02.fruit.exception.FruitNotFoundException;
 import cat.itacademy.s04.t02.n02.fruit.model.Fruit;
+import cat.itacademy.s04.t02.n02.fruit.model.Provider;
 import cat.itacademy.s04.t02.n02.fruit.repository.FruitRepository;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +56,15 @@ public class FruitServiceImpl implements FruitService {
     public List<FruitResponseDTO> getAllFruits() {
         return fruitRepository.findAll()
                 .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<FruitResponseDTO> getFruitsByProvider(Long providerId) {
+        Provider provider = providerRepository.findById(providerId)
+                .orElseThrow(() -> new RuntimeException("Provider not found"));
+        return fruitRepository.findByProvider(provider).stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
