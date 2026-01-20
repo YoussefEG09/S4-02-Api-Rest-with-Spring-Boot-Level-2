@@ -19,6 +19,13 @@ public class Fruit {
         this.name = name;
         this.weightInKg = weightInKg;
     }
+    @ManyToOne
+    @JoinColumn(name = "provider_id", nullable = false)
+    private Provider provider;
+
+
+    public Provider getProvider() { return provider; }
+    public void setProvider(Provider provider) { this.provider = provider; }
 
     public Long getId() {
         return id;
