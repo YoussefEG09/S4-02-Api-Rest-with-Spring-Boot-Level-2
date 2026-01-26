@@ -6,15 +6,23 @@ public class FruitResponseDTO {
     private String name;
     private int weightInKg;
 
+    private Long providerId;
+    private String providerName;
+    private String providerCountry;
 
     public FruitResponseDTO() {
     }
 
 
-    public FruitResponseDTO(Long id, String name, int weightInKg) {
+    public FruitResponseDTO(Long id, String name, int weightInKg,
+                            Long providerId, String providerName, String providerCountry) {
         this.id = id;
         this.name = name;
         this.weightInKg = weightInKg;
+        this.providerId = providerId;
+        this.providerName = providerName;
+        this.providerCountry = providerCountry;
+
     }
 
 
@@ -42,4 +50,16 @@ public class FruitResponseDTO {
     public void setWeightInKg(int weightInKg) {
         this.weightInKg = weightInKg;
     }
+
+    public Long getProviderId() {return providerId;}
+
+    public void setProviderId(Long providerId) {this.providerId = providerId;}
+
+    public String getProviderName() {return providerName;}
+
+    public void setProviderName(String providerName) {this.providerName = providerName;}
+
+    public String getProviderCountry() {return providerCountry;}
+
+    public void setProviderCountry(String providerCountry) {this.providerCountry = providerCountry;}
 }

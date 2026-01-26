@@ -3,9 +3,11 @@ package cat.itacademy.s04.t02.n02.fruit.services;
 import cat.itacademy.s04.t02.n02.fruit.dto.FruitDTO;
 import cat.itacademy.s04.t02.n02.fruit.dto.FruitResponseDTO;
 import cat.itacademy.s04.t02.n02.fruit.exception.FruitNotFoundException;
+import cat.itacademy.s04.t02.n02.fruit.exception.ProviderNotFoundException;
 import cat.itacademy.s04.t02.n02.fruit.model.Fruit;
 import cat.itacademy.s04.t02.n02.fruit.model.Provider;
 import cat.itacademy.s04.t02.n02.fruit.repository.FruitRepository;
+import cat.itacademy.s04.t02.n02.fruit.repository.ProviderRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,14 +17,20 @@ import java.util.stream.Collectors;
 public class FruitServiceImpl implements FruitService {
 
     private final FruitRepository fruitRepository;
+    private final ProviderRepository providerRepository;
 
-    public FruitServiceImpl(FruitRepository fruitRepository) {
+    public FruitServiceImpl(FruitRepository fruitRepository, ProviderRepository providerRepository) {
         this.fruitRepository = fruitRepository;
+        this.providerRepository = providerRepository;
     }
+
+
 
     @Override
     public FruitResponseDTO createFruit(FruitDTO fruitDTO) {
-        Fruit fruit = new Fruit(fruitDTO.getName(), fruitDTO.getWeightInKg());
+        Provider provider = providerRepository.findById(fruitDTO.getProviderId())
+                .orElseThrow(() -> new ProviderNotFoundException(fruitDTO.getProviderId()));
+        Fruit fruit = new Fruit(fruitDTO.getName(), fruitDTO.getWeightInKg(), provider);
         Fruit saved = fruitRepository.save(fruit);
         return mapToDTO(saved);
     }
@@ -71,6 +79,12 @@ public class FruitServiceImpl implements FruitService {
 
 
     private FruitResponseDTO mapToDTO(Fruit fruit) {
-        return new FruitResponseDTO(fruit.getId(), fruit.getName(), fruit.getWeightInKg());
+        FruitResponseDTO dto = new FruitResponseDTO();
+        dto.setId(fruit.getId());
+        dto.setName(fruit.getName());
+        dto.setWeightInKg(fruit.getWeightInKg());
+        dto.setProviderName(fruit.getProvider().getName());
+        dto.setProviderCountry(fruit.getProvider().getCountry());
+        return dto;
     }
 }

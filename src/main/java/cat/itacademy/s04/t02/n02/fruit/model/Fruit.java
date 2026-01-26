@@ -12,17 +12,18 @@ public class Fruit {
     private String name;
     private int weightInKg;
 
+    @ManyToOne
+    @JoinColumn(name = "provider_id")
+    private Provider provider;
+
     public Fruit() {
     }
 
-    public Fruit(String name, int weightInKg) {
+    public Fruit(String name, int weightInKg, Provider provider) {
         this.name = name;
         this.weightInKg = weightInKg;
+        this.provider = provider;
     }
-    @ManyToOne
-    @JoinColumn(name = "provider_id", nullable = false)
-    private Provider provider;
-
 
     public Provider getProvider() { return provider; }
     public void setProvider(Provider provider) { this.provider = provider; }
